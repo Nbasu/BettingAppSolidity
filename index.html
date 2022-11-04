@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Ethers.js</title>
+    <!-- <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+</head>
+
+<body class="flex w-screen h-screen justify-center items-center">
+    <div class="container">
+        <div class="row">
+          <div class="col text-center">
+            <button id="loginButton" class="btn btn-default btn-primary" onclick="connectMetamask()" >Connect with Wallet</button>
+          </div>
+        </div>
+        <h2 id="userAdd" >Walletaddress</h2>
+        <h3 id="userWallet" >Wallet Ballance</h3>
+        <button onclick="deployContract()">deployContract</button>
+        <button onclick="sendEtherWhenCallingFunction()">add receive</button>
+      </div>
+      
+    <!-- <button onclick="getBalance()">getBalance</button>
+    <button onclick="readDataFromSmartContract()">readDataFromSmartContract</button>
+    <br/>
+    <button onclick="sendUsdtToAccount()">sendUsdtToAccount</button>
+    <button onclick="deployContract()">deployContract</button>
+    <br/>
+
+    <button onclick="incrementNumberOnSmartContract()">incrementNumberOnSmartContract</button>
+    <button onclick="emitAnEvent()">emitAnEvent</button>
+    <button onclick="listenToEvents()">listenToEvents</button>
+    <br/>
+    <button onclick="sendEtherWhenCallingFunction()">sendEtherWhenCallingFunction</button>
+
+    <button onclick="readFromSCOnctractStorage()">readFromSCOnctractStorage</button> -->
+
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
+        type="application/javascript"></script>
+        <script src="index.js"></script>
+    
+</body>
+</html>
