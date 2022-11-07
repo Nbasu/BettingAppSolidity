@@ -2,7 +2,7 @@
 
 pragma solidity >=0.5.0 <0.9.0;
 import "hardhat/console.sol";
-
+//Niloy Basu
 contract Betting{
 
     address payable[] public players;
@@ -18,6 +18,10 @@ contract Betting{
         players.push(payable(msg.sender));
     }
 
+function totalPlayers() public view returns(uint count){
+       // require(msg.sender == owner,"You are not the owner");
+        return players.length;
+    }
     function getBalance() public view returns(uint){
         require(msg.sender == owner,"You are not the owner");
         return address(this).balance;

@@ -20,24 +20,31 @@
           </div>
         </div>
         <h3>Walletaddress</h3>
-        <h2 id="userAdd" ></h2>
-        Balance<h3 id="userWallet" ></h3>
+        <h4 id="userAdd" ></h4>
+        Balance<h4 id="userWallet" ></h4>
         <br>
         <div class="row">
             <div class="col offset-md-4 col-md-4">
               <label for="mood">Input ether:</label>
-              <input type="number" class="form-control" id="sendEther" placeholder="send ether value"><button onclick="readSmartContract()">add ether</button>
+              <input type="number" class="form-control" id="sendEther" placeholder="ethervalue" required><button class="btn btn-default btn-primary"  onclick="readSmartContract()">add ether</button>
+              <p id="updatedPlayers"></p>
             </div>
         </div>
-       <h4 id="updatedBal"></h4>
-       <br>
+       
        <br>
        <div class="row mt-2">
         <div class="col offset-md-4 col-md-2">
-          <button class="btn btn-primary btn-block" onclick="totalBalance()"> Total balance </button>
+          <button class="btn btn-primary btn-block" onclick="getPlayers()">Player details</button>
+          <p id="totalPlayers"></p>
+          <br>
+          <p id="playerDetail"></p>
         </div>
-
-       Players Details <button onclick="getPlayers()">Players</button>
+      </div>
+       <div class="row mt-2">
+        <div class="col offset-md-4 col-md-2">
+          <button class="btn btn-primary btn-block" onclick="totalBalance()"> Total balance </button>
+          <p id="updatedBal"></p>
+        </div>
       </div>
       
       <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
