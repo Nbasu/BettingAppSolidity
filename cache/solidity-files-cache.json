@@ -74,8 +74,8 @@
       ]
     },
     "C:\\Users\\niloy.basu\\Desktop\\POC\\contracts\\Betting.sol": {
-      "lastModificationDate": 1667800625026,
-      "contentHash": "d93feef8c4cba87e8762cb55388cf877",
+      "lastModificationDate": 1667822799219,
+      "contentHash": "d028b56d2dc368ebab65f7d5e724f476",
       "sourceName": "contracts/Betting.sol",
       "solcConfig": {
         "version": "0.8.17",

@@ -1,7 +1,7 @@
 
 let provider = new ethers.providers.Web3Provider(window.ethereum)
 let signer
-const ContractAddress = "0x0165878A594ca255338adfa4d48449f69242Eb8F";
+const ContractAddress = "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853";
 const ContractAbi = [
 	{
 		"inputs": [],
@@ -44,8 +44,19 @@ const ContractAbi = [
 	{
 		"inputs": [],
 		"name": "pickWinner",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "player",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amt",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -78,6 +89,24 @@ const ContractAbi = [
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "player",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amt",
+				"type": "uint256"
+			}
+		],
+		"name": "transferPrize",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]
@@ -178,7 +207,8 @@ async function getPlayers() {
    
     //let players = p1.toString();
     console.log('details player'+details);
-    $('#totalPlayers').html('<h3>Total participants = </h3>',length);
+    let dhtml = 'Total participants = '+length;
+    $('p#totalPlayers').html(dhtml);
     $('#playerDetail').html(details)
    // console.log('Total Players',myContract.players.length())
 }
@@ -186,10 +216,22 @@ async function getPlayers() {
 async function pickWinner(){
 
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
-    const txResponse = await myContract.connect(signer).pickWinner()
-
-    await txResponse.wait()
-
+    const txResponse = await myContract.pickWinner();
+    let winner = 'The winner is = '+ txResponse.player + 'and total prize money'+txResponse.amt;
+   // alert(txResponse)
+   // await txResponse.wait()
+    $('h3#WinnerDetails').text(winner);
+    console.log(winner);
    // let winner = await myContract.pickWinner();
-    console.log(`txResponse = ${txResponse.toString()}`)
+   // console.log(`txResponse =`,txResponse);
+}
+
+async function transferPrize(add,amt){
+
+     add = '0xaeCa43F58dc288586E60EE9A3696a5C3C4077De5';
+     amt = 0.04;
+    const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
+    await myContract.transferPrize(add,amt);
+    
+
 }

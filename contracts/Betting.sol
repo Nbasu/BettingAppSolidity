@@ -32,11 +32,11 @@ function totalPlayers() public view returns(uint count){
     }
 
 
-    function pickWinner() public{
+    function pickWinner() public view returns(address player,uint amt) {
 
         require(msg.sender == owner);
         require (players.length >= 2);
-
+        uint amount = getBalance();
         uint r = random();
         address payable winner;
 
@@ -44,8 +44,15 @@ function totalPlayers() public view returns(uint count){
 
         winner = players[index];
         console.log("The winner is :", winner);
-        winner.transfer(getBalance());
-        players = new address payable[](0);
+        return (winner,amount);
+        //winner.transfer(getBalance());
+       
+    }
+
+    function transferPrize(address payable player, uint amt)public{
+
+        player.transfer(amt);
+         players = new address payable[](0);
     }
 
 }
