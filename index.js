@@ -142,9 +142,11 @@ async function readSmartContract() {
     await txResponse.wait()
 
     const balance = await myContract.getBalance()
+    let bal = balance.toString();
     console.log(`balance = ${balance.toString()}`)
-    alert('Updated Balance',balance);
-    $('#UpdatedBal').text(balance);
+    alert('updatedbalance');
+    alert(bal);
+    $('h4#UpdatedBal').text(bal);
   //  const tx = await Contract.transfer("0x2546BcD3c84621e976D8185a91A922aE77ECEc30", "500000000")
    //const tx = await usdcContract.transfer(receiver, amount, { gasPrice: 20e9 });
   // console.log(`Transaction hash: ${tx.hash}`);
@@ -159,7 +161,9 @@ async function totalBalance(){
 
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
     let p1 = await myContract.getBalance();
-    alert('Total balance',p1)
+    let bal = p1.toString();
+    alert('Total balance');
+    alert(bal);
    // console.log('1st player',p1);
 
 }
@@ -168,7 +172,8 @@ async function getPlayers() {
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
 
     let p1 = await myContract.players(0);
-    console.log('1st player',p1);
+    let players = p1.toString();
+    console.log('1st player'+players);
    // console.log('Total Players',myContract.players.length())
 
     
