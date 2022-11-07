@@ -1,7 +1,7 @@
 
 let provider = new ethers.providers.Web3Provider(window.ethereum)
 let signer
-const ContractAddress = "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707";
+const ContractAddress = "0x0165878A594ca255338adfa4d48449f69242Eb8F";
 const ContractAbi = [
 	{
 		"inputs": [],
@@ -137,9 +137,9 @@ async function readSmartContract() {
 
     await txResponse.wait()
 
-    const balance = await myContract.getBalance()
+    ////const balance = await myContract.getBalance()
    // let bal = balance.toString();
-    console.log(`balance = ${balance.toString()}`)
+  //  console.log(`balance = ${balance.toString()}`)
     alert('balance updated successfuly');
    // alert(bal);
    $('#sendEther').val('');
@@ -158,7 +158,7 @@ async function totalBalance(){
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
     let p1 = await myContract.getBalance();
     let bal = p1.toString();
-    $('p#updatedBal').text(bal);
+    $('h3#updatedBal').text(bal);
    // console.log('1st player',p1);
 
 }
@@ -168,6 +168,7 @@ async function getPlayers() {
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
     let length = await myContract.totalPlayers();
     alert(length);
+    $('#totalPlayers').html('');
     let details = '';
     for (let index = 0; index < length; index++) {
         let p1 = await myContract.players(index);
@@ -180,4 +181,15 @@ async function getPlayers() {
     $('#totalPlayers').html('<h3>Total participants = </h3>',length);
     $('#playerDetail').html(details)
    // console.log('Total Players',myContract.players.length())
+}
+
+async function pickWinner(){
+
+    const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
+    const txResponse = await myContract.connect(signer).pickWinner()
+
+    await txResponse.wait()
+
+   // let winner = await myContract.pickWinner();
+    console.log(`txResponse = ${txResponse.toString()}`)
 }
