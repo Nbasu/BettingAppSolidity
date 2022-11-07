@@ -19,7 +19,7 @@
             <button id="loginButton" class="btn btn-default btn-primary" onclick="connectMetamask()" >Connect with Wallet</button>
           </div>
         </div>
-        <h3>Walletaddress</h3>
+        <h3>Owner Address</h3>
         <h4 id="userAdd" ></h4>
         Balance<h4 id="userWallet" ></h4>
         <br>
@@ -49,6 +49,8 @@
       <div class="row mt-2">
         <div class="col offset-md-4 col-md-2">
           <button class="btn btn-primary btn-block" onclick="pickWinner()"> Pick Winner </button>
+          <input type="hidden" value="" id="receiver_add">
+          <input type="hidden" value="" id="receiver_amt">
           <h3 id="WinnerDetails"></h3>
         </div>
       </div>

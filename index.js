@@ -196,7 +196,7 @@ async function getPlayers() {
   //  alert('Inside')
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
     let length = await myContract.totalPlayers();
-    alert(length);
+   // alert(length);
     $('#totalPlayers').html('');
     let details = '';
     for (let index = 0; index < length; index++) {
@@ -217,11 +217,13 @@ async function pickWinner(){
 
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
     const txResponse = await myContract.pickWinner();
-    let winner = 'The winner is = '+ txResponse.player + 'and total prize money'+txResponse.amt;
+    let winner = 'The winner is = '+ txResponse.player + ' and total prize money '+txResponse.amt;
+    let length = await myContract.totalPlayers();
+    console.log('Array length',length.toString())
    // alert(txResponse)
    // await txResponse.wait()
     $('h3#WinnerDetails').text(winner);
-    console.log(winner);
+    console.log('txResponse winner',txResponse);
    // let winner = await myContract.pickWinner();
    // console.log(`txResponse =`,txResponse);
 }
@@ -229,9 +231,11 @@ async function pickWinner(){
 async function transferPrize(add,amt){
 
      add = '0xaeCa43F58dc288586E60EE9A3696a5C3C4077De5';
-     amt = 0.04;
+    let receiver = ethers.utils.getAddress(add);
+     amt = '0.04';
+     amt = ethers.utils.parseEther(amt)
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
-    await myContract.transferPrize(add,amt);
+    await myContract.connect(signer).transferPrize(receiver,amt);
     
 
 }
