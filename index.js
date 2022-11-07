@@ -109,18 +109,6 @@ async function getBalance() {
     console.log("account's balance in ether:", balance.toString() / convertToEth);
 }
 
-// 3. read data from the USDT contract on kovan 
-const usdtAddress = "0x13512979ADE267AB5100878E2e0f485B568328a4";
-
-const usdtAbi = [
-    // Some details about the token
-    "function name() view returns (string)",
-    "function symbol() view returns (string)",
-    "function decimals() view returns (uint8)",
-    "function balanceOf(address) view returns (uint)",
-    "function totalSupply() view returns (uint256)",
-    "function transfer(address to, uint amount)"
-];
 
 async function readDataFromSmartContract() {
 
@@ -139,24 +127,24 @@ async function readDataFromSmartContract() {
     console.log(`myBalance = ${myBalance / 1e6}`)
 }
 
-// 4. Send Usdt to one account to another
-async function sendUsdtToAccount() {
-    const usdtContract = new ethers.Contract(usdtAddress, usdtAbi, provider);
-    usdtContract.connect(signer).transfer("0x6CC3dFBec068b7fccfE06d4CD729888997BdA6eb", "500000000")
-}
 
 // 6. Call function on smart contract and wait for it to finish (to be mined)NB
 async function readSmartContract() {
-    const numberContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
+  //  const UpdatedBal = document.getElementById('UpdatedBal');
+    const getval = $('#sendEther').val();
+    alert(getval);
+    const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
 
-    const options = {value: ethers.utils.parseEther("0.005")}
+    const options = {value: ethers.utils.parseEther(getval)}
 
-    const txResponse = await numberContract.connect(signer).deposit(options)
+    const txResponse = await myContract.connect(signer).deposit(options)
 
     await txResponse.wait()
 
-    const balance = await numberContract.getBalance()
+    const balance = await myContract.getBalance()
     console.log(`balance = ${balance.toString()}`)
+    alert('Updated Balance',balance);
+    $('#UpdatedBal').text(balance);
   //  const tx = await Contract.transfer("0x2546BcD3c84621e976D8185a91A922aE77ECEc30", "500000000")
    //const tx = await usdcContract.transfer(receiver, amount, { gasPrice: 20e9 });
   // console.log(`Transaction hash: ${tx.hash}`);
@@ -164,6 +152,27 @@ async function readSmartContract() {
     await txResponse.wait()
     number = await numberContract.number()
     console.log("updated number = ", number.toString())*/
+
+}
+
+async function totalBalance(){
+
+    const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
+    let p1 = await myContract.getBalance();
+    alert('Total balance',p1)
+   // console.log('1st player',p1);
+
+}
+
+async function getPlayers() {
+    const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
+
+    let p1 = await myContract.players(0);
+    console.log('1st player',p1);
+   // console.log('Total Players',myContract.players.length())
+
+    
+    
 
 }
 

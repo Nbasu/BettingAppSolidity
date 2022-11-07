@@ -19,27 +19,32 @@
             <button id="loginButton" class="btn btn-default btn-primary" onclick="connectMetamask()" >Connect with Wallet</button>
           </div>
         </div>
-        <h2 id="userAdd" >Walletaddress</h2>
-        <h3 id="userWallet" >Wallet Ballance</h3>
-        <button onclick="deployContract()">deployContract</button>
-        <button onclick="sendEtherWhenCallingFunction()">add receive</button>
+        <h3>Walletaddress</h3>
+        <h2 id="userAdd" ></h2>
+        Balance<h3 id="userWallet" ></h3>
+        <br>
+        <div class="row">
+            <div class="col offset-md-4 col-md-4">
+              <label for="mood">Input ether:</label>
+              <input type="number" class="form-control" id="sendEther">
+            </div>
+          </div>
+    
+       Deposit Amount <button onclick="readSmartContract()">add ether</button>
+       <h4 id="updatedBal"> </h4>
+       <br>
+       <br>
+       <div class="row mt-2">
+        <div class="col offset-md-4 col-md-2">
+          <button class="btn btn-primary btn-block" onclick="totalBalance()"> Total balance </button>
+        </div>
+
+       Players Details <button onclick="getPlayers()">Players</button>
       </div>
       
-    <!-- <button onclick="getBalance()">getBalance</button>
-    <button onclick="readDataFromSmartContract()">readDataFromSmartContract</button>
-    <br/>
-    <button onclick="sendUsdtToAccount()">sendUsdtToAccount</button>
-    <button onclick="deployContract()">deployContract</button>
-    <br/>
-
-    <button onclick="incrementNumberOnSmartContract()">incrementNumberOnSmartContract</button>
-    <button onclick="emitAnEvent()">emitAnEvent</button>
-    <button onclick="listenToEvents()">listenToEvents</button>
-    <br/>
-    <button onclick="sendEtherWhenCallingFunction()">sendEtherWhenCallingFunction</button>
-
-    <button onclick="readFromSCOnctractStorage()">readFromSCOnctractStorage</button> -->
-
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+  
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
         type="application/javascript"></script>
         <script src="index.js"></script>
