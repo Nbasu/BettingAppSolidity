@@ -14,16 +14,17 @@
 
 <body class="flex w-screen h-screen justify-center items-center">
     <div class="container">
-        <div class="row">
+        <div class="row" >
           <div class="col text-center">
             <button id="loginButton" class="btn btn-default btn-primary" onclick="connectMetamask()" >Connect with Wallet</button>
           </div>
         </div>
-        <h3>Owner Address</h3>
-        <h4 id="userAdd" ></h4>
-        Balance<h4 id="userWallet" ></h4>
-        <br>
-        <div class="row">
+        <div id="maindiv" style="display: none;">
+         Owner Address
+        <h4 id="userAdd"></h4>
+        Balance<h4 id="userWallet"></h4>
+        
+        <div class="row" >
             <div class="col offset-md-4 col-md-4">
               <label for="mood">Input ether:</label>
               <input type="number" class="form-control" id="sendEther" placeholder="ethervalue" required><button class="btn btn-default btn-primary"  onclick="readSmartContract()">add ether</button>
@@ -59,6 +60,7 @@
           <button class="btn btn-primary btn-block" onclick="transferPrize('222',11)">Transfer Prize</button>
          
         </div>
+      </div>
       </div>
       <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
       crossorigin="anonymous"></script>

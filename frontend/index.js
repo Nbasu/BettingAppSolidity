@@ -1,7 +1,7 @@
 
 let provider = new ethers.providers.Web3Provider(window.ethereum)
 let signer
-const ContractAddress = "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853";
+const ContractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const ContractAbi = [
 	{
 		"inputs": [],
@@ -115,6 +115,7 @@ async function connectMetamask() {
     const loginButton = document.getElementById('loginButton')
     const userWallet = document.getElementById('userWallet')
     const userAdd = document.getElementById('userAdd')
+	$('div#maindiv').show();
     // MetaMask requires requesting permission to connect users accounts
     await provider.send("eth_requestAccounts", []);
 
@@ -129,10 +130,7 @@ async function connectMetamask() {
      const acc_bal = balance.toString() / convertToEth
      console.log("account's balance in ether:", acc_bal);
      userWallet.innerText = acc_bal;                              
-      loginButton.removeEventListener('click', connectMetamask)
-      setTimeout(() => {
-        loginButton.addEventListener('click', signOutOfMetaMask)
-      }, 200)
+	console.log(acc_bal)
 }
 function signOutOfMetaMask() {
     window.userWalletAddress = null
@@ -218,22 +216,20 @@ async function pickWinner(){
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
     const txResponse = await myContract.pickWinner();
     let winner = 'The winner is = '+ txResponse.player + ' and total prize money '+txResponse.amt;
-    let length = await myContract.totalPlayers();
-    console.log('Array length',length.toString())
-   // alert(txResponse)
-   // await txResponse.wait()
+	$('#receiver_add').val(txResponse.player);
+	$('#receiver_amt').val(txResponse.amt);
     $('h3#WinnerDetails').text(winner);
     console.log('txResponse winner',txResponse);
    // let winner = await myContract.pickWinner();
    // console.log(`txResponse =`,txResponse);
 }
 
-async function transferPrize(add,amt){
+async function transferPrize(){
 
-     add = '0xaeCa43F58dc288586E60EE9A3696a5C3C4077De5';
+	let add = $('#receiver_add').val();
+	let amt = $('#receiver_amt').val();
     let receiver = ethers.utils.getAddress(add);
-     amt = '0.04';
-     amt = ethers.utils.parseEther(amt)
+    amt = ethers.utils.parseEther(amt)
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
     await myContract.connect(signer).transferPrize(receiver,amt);
     
