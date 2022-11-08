@@ -1,7 +1,7 @@
 
 let provider = new ethers.providers.Web3Provider(window.ethereum)
 let signer
-const ContractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const ContractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
 const ContractAbi = [
 	{
 		"inputs": [],
@@ -226,12 +226,21 @@ async function pickWinner(){
 
 async function transferPrize(){
 
+	//let add = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
 	let add = $('#receiver_add').val();
 	let amt = $('#receiver_amt').val();
+	amt = ethers.utils.formatUnits(amt,18);
     let receiver = ethers.utils.getAddress(add);
-    amt = ethers.utils.parseEther(amt)
+    amt = ethers.utils.parseEther(amt);
+	console.log('receuver',receiver);
+	console.log('amt===',amt)
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
-    await myContract.connect(signer).transferPrize(receiver,amt);
+	try {
+		await myContract.connect(signer).transferPrize(receiver,amt);
+	} catch (error) {
+		console.log('errrrr',error)
+	}
+    
     
 
 }
