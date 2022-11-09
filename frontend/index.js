@@ -115,7 +115,7 @@ async function connectMetamask() {
     const loginButton = document.getElementById('loginButton')
     const userWallet = document.getElementById('userWallet')
     const userAdd = document.getElementById('userAdd')
-	$('div#maindiv').show();
+	$('div#procced').show();
     // MetaMask requires requesting permission to connect users accounts
     await provider.send("eth_requestAccounts", []);
 
@@ -123,7 +123,7 @@ async function connectMetamask() {
     let Signeraddress = await signer.getAddress(); 
     console.log("Account addressss:", Signeraddress);
     userAdd.innerText = Signeraddress;
-     loginButton.innerText = 'SignOut'
+    // loginButton.innerText = 'SignOut'
     
      const balance = await signer.getBalance()
      const convertToEth = 1e18;
@@ -209,6 +209,13 @@ async function getPlayers() {
     $('p#totalPlayers').html(dhtml);
     $('#playerDetail').html(details)
    // console.log('Total Players',myContract.players.length())
+}
+
+async function next(){
+
+	$('#procced').hide();
+	$('div#maindiv').show();
+	$('#loginButton').hide();
 }
 
 async function pickWinner(){

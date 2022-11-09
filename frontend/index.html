@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn Ethers.js</title>
+    <title>POC on Solidity & Ethersjs</title>
     <!-- <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -16,14 +16,25 @@
     <div class="container">
         <div class="row" >
           <div class="col text-center">
-            <button id="loginButton" class="btn btn-default btn-primary" onclick="connectMetamask()" >Connect with Wallet</button>
+            <button id="loginButton" style="margin: auto;" class="btn btn-default btn-primary" onclick="connectMetamask()" >Connect with Wallet</button>
           </div>
         </div>
+        <div class="row" id="procced" style="display: none;">
+          <div class="col offset-md-4 col-md-4">
+            <ul>
+              <li>To participte in this game add same amount of ether from different accounts </li>
+              <li>Click playerDetail button to check players number and details</li>
+              <li>Click totalBalance to get prize amount only owner can see this</li>
+              <li>Pick winner to randomly pick winner, only owner can use this</li>
+              <li>Transfer is to tranfer prize to winner wallet.</li>
+            </ul>
+            <button id="agreebutton" style="margin: auto;" class="btn btn-default btn-primary" onclick="next()" >Procced</button>
+          </div>
+      </div>
         <div id="maindiv" style="display: none;">
-         Owner Address
+         <h3 style="color: Blue;">Owner Address</h3>
         <h4 id="userAdd"></h4>
-        Balance<h4 id="userWallet"></h4>
-        
+        <h3 style="color: Blue;">Balance</h3><h4 id="userWallet"></h4>
         <div class="row" >
             <div class="col offset-md-4 col-md-4">
               <label for="mood">Input ether:</label>
