@@ -1,58 +1,59 @@
 //SPDX-License-Identifier: GPL-3.0
 
-pragma solidity >=0.5.0 <0.9.0;
+pragma solidity >=0.3.0 <0.9.0;
 import "hardhat/console.sol";
 //Niloy Basu
 contract Betting{
 
-    address payable[] public players;
-    address public owner;
+     address public owner;
 
+    struct LogDetails {
 
+        address payable playeradd;
+        string playerName;
+        uint amount;
+    }
+
+    LogDetails[] details;
     constructor(){
         owner = msg.sender;
     }
 
-    function deposit() external payable{
+    function mydeposit(string memory playerName) public payable{
+
       //  require(msg.value == 1 ether);
-        players.push(payable(msg.sender));
+        details.push(LogDetails(payable(msg.sender),playerName,msg.value));
+
+    }
+
+    function getAllTransactions() public view returns (LogDetails[] memory) {
+        return details;
     }
 
 function totalPlayers() public view returns(uint count){
-       // require(msg.sender == owner,"You are not the owner");
-        return players.length;
+      
+        return details.length;
     }
     function getBalance() public view returns(uint){
-        require(msg.sender == owner,"You are not the owner");
+       
         return address(this).balance;
     }
 
-    function random() internal view returns(uint){
-       return uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp, players.length)));
-    }
+function pickWinner(uint rand) public view returns(address player,uint amt) {
 
-
-    function pickWinner() public view returns(address player,uint amt) {
-
-        require(msg.sender == owner);
-        require (players.length >= 2);
         uint amount = getBalance();
-        uint r = random();
         address payable winner;
-
-        uint index = r % players.length;
-
-        winner = players[index];
+        winner = details[rand].playeradd;
         console.log("The winner is :", winner);
         return (winner,amount);
-        //winner.transfer(getBalance());
        
     }
 
-    function transferPrize(address payable player, uint amt)public{
+    function transferPrize(address payable particip, uint amt)public{
 
-        player.transfer(amt);
-         players = new address payable[](0);
+         particip.transfer(amt);
+         delete details;
+       
     }
 
 }

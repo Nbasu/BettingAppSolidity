@@ -4,12 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POC on Solidity & Ethersjs</title>
+    <title>POC Solidity & Ethersjs</title>
     <!-- <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'></link>  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<style>
+  li.active :hover{
+  background-color: #666;
+}
 
+.newdesign{
+  color:white;
+  font-size: large; font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+</style>
 </head>
 
 <body class="flex w-screen h-screen justify-center items-center">
@@ -32,50 +42,139 @@
           </div>
       </div>
         <div id="maindiv" style="display: none;">
-         <h3 style="color: Blue;">Owner Address</h3>
-        <h4 id="userAdd"></h4>
-        <h3 style="color: Blue;">Balance</h3><h4 id="userWallet"></h4>
-        <div class="row" >
-            <div class="col offset-md-4 col-md-4">
-              <label for="mood">Input ether:</label>
-              <input type="number" class="form-control" id="sendEther" placeholder="ethervalue" required><button class="btn btn-default btn-primary"  onclick="readSmartContract()">add ether</button>
-              <p id="updatedPlayers"></p>
+          <nav class="navbar navbar-inverse" style="background-color: #5453a9;">
+            <div class="container-fluid">
+              <!-- <div class="navbar-header">
+                <a class="navbar-brand" href="#">POC</a>
+              </div> -->
+              <ul class="nav nav-tabs">
+                <!-- <li><a data-toggle="tab" href="#home" >Owner Details</a></li>
+                <li><a data-toggle="tab" href="#menu1" >Add Deposit</a></li>
+                <li><a data-toggle="tab" href="#menu2" onclick="getPlayers()">Deposit Details</a></li>
+                <li><a data-toggle="tab" href="#menu3" >Transfer</a></li>
+                <li><a data-toggle="tab" href="#menu4" onclick="pickWinner()">RandomTransfer</a></li> -->
+                <li><a data-toggle="tab" class="newdesign" href="#home" >Owner Details</a></li>
+                <li><a data-toggle="tab" class="newdesign" href="#menu1" >Add Deposit</a></li>
+                <li><a data-toggle="tab" class="newdesign" href="#menu2" onclick="getPlayers()">Deposit Details</a></li>
+                <li><a data-toggle="tab" class="newdesign" href="#menu3" >Transfer</a></li>
+                <li><a data-toggle="tab" class="newdesign" href="#menu4" onclick="pickWinner()">RandomTransfer</a></li>
+            
+              </ul>
             </div>
-        </div>
-       
-       <br>
-       <div class="row mt-2">
-        <div class="col offset-md-4 col-md-2">
-          <button class="btn btn-primary btn-block" onclick="getPlayers()">Player details</button>
-          <p id="totalPlayers"></p>
-          <br>
-          <p id="playerDetail"></p>
-        </div>
-      </div>
-       <div class="row mt-2">
-        <div class="col offset-md-4 col-md-2">
-          <button class="btn btn-primary btn-block" onclick="totalBalance()"> Total balance </button>
-          <h3 id="updatedBal"></h3>
-        </div>
-      </div>
-      <div class="row mt-2">
-        <div class="col offset-md-4 col-md-2">
-          <button class="btn btn-primary btn-block" onclick="pickWinner()"> Pick Winner </button>
+          </nav>
+
+          <div class="container">
+          
+            <div class="tab-content">
+              <div id="home" class="tab-pane fade in active">
+                
+         <h3 style="color: Blue;">Owner Address</h3>
+         <h4 id="userAdd"></h4>
+         <h3 style="color: Blue;">Balance</h3><h4 id="userWallet"></h4>
+              </div>
+              <div id="menu1" class="tab-pane fade">
+                <h2 style="position: center;">Transfer ether into the contract</h2>
+                <hr>
+        
+                <div class="form-horizontal">
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">Depositer Name:</label>
+                    <div class="col-sm-5">
+                      <input type="text" class="form-control" id="pname" placeholder="Enter name">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="pwd">Ether Amount:</label>
+                    <div class="col-sm-5">          
+                      <input type="number" class="form-control" id="sendEther" placeholder="Enter ether">
+                    </div>
+                  </div>
+                  <div class="form-group">        
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-primary mb-2" onclick="depositEther()">Send</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="menu2" class="tab-pane fade">
+                <div class="form-group">
+                  <label class="control-label col-sm-2" style="color: Blue;">Total Senders = </label>
+                  <label class="control-label col-sm-2" for="email" id="tot_senders"></label>
+                  <label class="control-label col-sm-2" style="color: Blue;">Total Balance</label>
+                  <label class="control-label col-sm-2" for="email" id="tot_balance"></label>
+                </div>
+                <br>
+                <br>
+                <hr>
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Sender</th>
+                      <th scope="col">Address</th>
+                      <th scope="col">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody id="playerDetails">
+                   
+                  </tbody>
+                </table>
+                
+              </div>
+              <div id="menu3" class="tab-pane fade">
+                <h2 style="position: center;">Transfer total balance from the contract to individual</h2>
+                <hr>
+                <div class="form-horizontal">
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">Transfer To:</label>
+                    <div class="form-group">
+                    <div class="col-sm-5">
+                        <select class="form-control" id="drop_senders">
+                          <option>select</option>
+                          </select>
+                          </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">Transfer Amount:</label>
+                    <div class="col-sm-5">
+                      <input type="number" readonly class="form-control" id="tamount">
+                    </div>
+                  </div>
+                  <div class="form-group">        
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-primary mb-2" onclick="transfer()">Transfer</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="menu4" class="tab-pane fade">
+
+                <div class="form-group">
+                  <label class="control-label col-sm-1" style="color: Blue;">Winner is </label>
+                  <label class="control-label col-sm-5" for="email" id="WinnerDetails"></label>
+                  <button class="btn btn-primary" onclick="transferPrize()">Transfer Prize</button>
+                </div>
           <input type="hidden" value="" id="receiver_add">
           <input type="hidden" value="" id="receiver_amt">
-          <h3 id="WinnerDetails"></h3>
         </div>
       </div>
-      <div class="row mt-2">
-        <div class="col offset-md-4 col-md-2">
-          <button class="btn btn-primary btn-block" onclick="transferPrize()">Transfer Prize</button>
-         
-        </div>
-      </div>
+              </div>
+              <br>
+              <footer class="bg-light text-center text-lg-start">
+                <!-- Copyright -->
+                <div class="text-center p-3" style="background-color: #5453a9; color: white;">
+                  © 2022 POC:
+                  <a style="color:white">Niloy Basu</a>
+                </div>
+                <!-- Copyright -->
+              </footer>
+            </div>
+          </div>
       </div>
       <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
       crossorigin="anonymous"></script>
-  
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>  
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
         type="application/javascript"></script>
         <script src="index.js"></script>

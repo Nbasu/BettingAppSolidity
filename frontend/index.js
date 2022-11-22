@@ -1,7 +1,7 @@
 
 let provider = new ethers.providers.Web3Provider(window.ethereum)
 let signer
-const ContractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
+const ContractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const ContractAbi = [
 	{
 		"inputs": [],
@@ -10,9 +10,32 @@ const ContractAbi = [
 	},
 	{
 		"inputs": [],
-		"name": "deposit",
-		"outputs": [],
-		"stateMutability": "payable",
+		"name": "getAllTransactions",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address payable",
+						"name": "playeradd",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "playerName",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct Betting.LogDetails[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -29,6 +52,19 @@ const ContractAbi = [
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "playerName",
+				"type": "string"
+			}
+		],
+		"name": "mydeposit",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "owner",
 		"outputs": [
@@ -42,7 +78,13 @@ const ContractAbi = [
 		"type": "function"
 	},
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "rand",
+				"type": "uint256"
+			}
+		],
 		"name": "pickWinner",
 		"outputs": [
 			{
@@ -54,25 +96,6 @@ const ContractAbi = [
 				"internalType": "uint256",
 				"name": "amt",
 				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "players",
-		"outputs": [
-			{
-				"internalType": "address payable",
-				"name": "",
-				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -95,7 +118,7 @@ const ContractAbi = [
 		"inputs": [
 			{
 				"internalType": "address payable",
-				"name": "player",
+				"name": "particip",
 				"type": "address"
 			},
 			{
@@ -109,7 +132,7 @@ const ContractAbi = [
 		"stateMutability": "nonpayable",
 		"type": "function"
 	}
-]
+];
 // 1. Connect Metamask with Dapp
 async function connectMetamask() {
 	$('#procced').hide();
@@ -153,33 +176,18 @@ async function getBalance() {
 
 
 
-//  Call function on smart contract and wait for it to finish (to be mined)NB
-async function readSmartContract() {
+async function depositEther() {
   //  const UpdatedBal = document.getElementById('UpdatedBal');
+  	const pname = $('#pname').val();
     const getval = $('#sendEther').val();
-    //alert(getval);
+    console.log(pname);
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
-
     const options = {value: ethers.utils.parseEther(getval)}
-
-    const txResponse = await myContract.connect(signer).deposit(options)
-
-    await txResponse.wait()
-
-    ////const balance = await myContract.getBalance()
-   // let bal = balance.toString();
-  //  console.log(`balance = ${balance.toString()}`)
-    alert('balance updated successfuly');
-   // alert(bal);
-   $('#sendEther').val('');
-  //  const tx = await Contract.transfer("0x2546BcD3c84621e976D8185a91A922aE77ECEc30", "500000000")
-   //const tx = await usdcContract.transfer(receiver, amount, { gasPrice: 20e9 });
-  // console.log(`Transaction hash: ${tx.hash}`);
-    /*const txResponse = await numberContract.connect(signer).incrementNumber()
-    await txResponse.wait()
-    number = await numberContract.number()
-    console.log("updated number = ", number.toString())*/
-
+    const txResponse = await myContract.connect(signer).mydeposit(pname,options)
+    await txResponse.wait();
+	swal("Deposit!", "You deposit ether in contract", "success");  
+	$('#sendEther').val('');
+    $('#pname').val('');
 }
 
 async function totalBalance(){
@@ -187,30 +195,41 @@ async function totalBalance(){
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
     let p1 = await myContract.getBalance();
     let bal = p1.toString();
+	bal = bal /1000000000000000000;
     $('h3#updatedBal').text(bal);
    // console.log('1st player',p1);
 
 }
 
 async function getPlayers() {
-  //  alert('Inside')
+
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
-    let length = await myContract.totalPlayers();
-   // alert(length);
-    $('#totalPlayers').html('');
-    let details = '';
-    for (let index = 0; index < length; index++) {
-        let p1 = await myContract.players(index);
-        //alert(p1);
-        details += p1.toString()+'<br>';
-    }
-   
-    //let players = p1.toString();
-    console.log('details player'+details);
-    let dhtml = 'Total participants = '+length;
-    $('p#totalPlayers').html(dhtml);
-    $('#playerDetail').html(details)
-   // console.log('Total Players',myContract.players.length())
+	let tot_balance = await myContract.getBalance();
+    let bal = tot_balance.toString();
+	bal = bal /1000000000000000000;
+	$('#tot_balance').html(bal);
+	$('#tamount').val(bal)
+   $('tbody#playerDetails').html('');
+	let p1 = await myContract.getAllTransactions();
+	console.log(p1[0]);
+	let i=0;
+	$('tbody#playerDetails').empty();
+	let optin = '<option value="-1">Please Select Participants</option>';                            
+	$.each(p1, function (index, value) { 
+		i++;
+		optin += '<option value="' + value.playeradd + '">' + value.playerName + '</option>';  
+		$('tbody#playerDetails').append(
+		'<tr>' +
+				  '<td><p style="font-size:small;">' + i + '</p></td>' +
+				  '<td><p style="font-size:small;">' + value.playerName + '</p></td>' +
+				  '<td><p style="font-size:small;">' + value.playeradd + '</p></td>' +
+				  '<td><p style="font-size:small;">' + (value.amount/1000000000000000000) + '</p></td>' +
+				  '</tr>');
+	});
+    $('#tot_senders').html(i);
+	console.log(optin);
+	$('select#drop_senders').html(optin);
+	//$('tbody#playerDetails').html(p1[0]['playerName']); 	
 }
 
 async function next(){
@@ -219,14 +238,34 @@ async function next(){
 	$('#loginButton').hide();
 }
 
+async function transfer(){
+	let amt = $('#tamount').val();
+	let address = $('select#drop_senders').val()
+	alert(address);
+	let receiver = ethers.utils.getAddress(address);
+    amt = ethers.utils.parseEther(amt);
+	console.log('receuver',receiver);
+	console.log('amt===',amt)
+    const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
+	try {
+		await myContract.connect(signer).transferPrize(receiver,amt);
+	} catch (error) {
+		console.log('errrrr',error)
+	}
+
+}
+
 async function pickWinner(){
 
+	let rand = Math.floor(Math.random()*3);
+	console.log('random = ',rand);
+	$('#receiver_add').val('');
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
-    const txResponse = await myContract.pickWinner();
-    let winner = 'The winner is = '+ txResponse.player + ' and total prize money '+txResponse.amt;
+    const txResponse = await myContract.pickWinner(rand);
+    let winner =  txResponse.player + ' and Prize '+(txResponse.amt)/1000000000000000000 +' ether';
 	$('#receiver_add').val(txResponse.player);
 	$('#receiver_amt').val(txResponse.amt);
-    $('h3#WinnerDetails').text(winner);
+    $('#WinnerDetails').text(winner);
     console.log('txResponse winner',txResponse);
    // let winner = await myContract.pickWinner();
    // console.log(`txResponse =`,txResponse);
@@ -245,6 +284,7 @@ async function transferPrize(){
     const myContract = new ethers.Contract(ContractAddress, ContractAbi, provider);
 	try {
 		await myContract.connect(signer).transferPrize(receiver,amt);
+		swal("Winner!", "Prize transfer into account", "success");  
 	} catch (error) {
 		console.log('errrrr',error)
 	}
